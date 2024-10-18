@@ -31,6 +31,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
+		
+		logger.debug("JwtRequestFilter - Incoming request: " + request.getRequestURI());
 
 		String username = null;
 		String jwtToken = jwtTokenService.getJwtToken(request);
@@ -56,6 +58,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			logger.debug("JWT Token does not begin with Bearer String");
 		}
 		chain.doFilter(request, response);
+		logger.debug("JwtRequestFilter - Response status: " + response.getStatus());
 	}
 
 }
