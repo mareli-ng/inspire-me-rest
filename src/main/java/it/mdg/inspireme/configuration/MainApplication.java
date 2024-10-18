@@ -13,9 +13,9 @@ import org.springframework.web.client.RestTemplate;
 @ComponentScan(basePackages = {"it.mdg.*"})
 @EntityScan("it.mdg.*")
 @EnableJpaRepositories("it.mdg.*")
-public class GSRestApplication {
+public class MainApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(GSRestApplication.class, args);
+		SpringApplication.run(MainApplication.class, args);
 	}
 
 	@Bean

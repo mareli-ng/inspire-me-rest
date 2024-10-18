@@ -50,19 +50,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.authenticationProvider(authProvider());
 	}
 
-	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable().cors().and().authorizeRequests()
-
-				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.antMatchers(HttpMethod.POST, "/authenticate").permitAll()
-				.anyRequest().authenticated()
-				.and()
-				.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-				.and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-	}
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf().disable()
+		        .cors().and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
 
 	@Bean
 	public DaoAuthenticationProvider authProvider() {
@@ -72,21 +74,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return authProvider;
 	}
 
-	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		// https://stackoverflow.com/questions/53605255/spring-boot-jwt-cors-with-angular-6
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("*"));
-		configuration.setAllowedHeaders(Arrays.asList("*"));
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "PUT", "DELETE"));
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
-		return source;
-	}
+@Bean
+public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "PUT", "DELETE"));
+    configuration.setAllowCredentials(true); 
 
-//	@Override
-//	public void configure(WebSecurity web) throws Exception {
-//		web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**");
-//	}
+    // Qui puoi gestire le origini dinamicamente
+    configuration.setAllowedOrigins(getAllowedOrigins()); // Metodi per ottenere le origini consentite
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+}
+
+private List<String> getAllowedOrigins() {
+    // Logica per recuperare le origini consentite
+    return Arrays.asList("http://localhost:8100", "*"); // aggiungi le origini specifiche se conosciute
+}
+
 
 }
