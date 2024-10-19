@@ -18,8 +18,7 @@ public class FirebaseConfig {
 
 	@PostConstruct
 	public void initialize() {
-		Dotenv dotenv = Dotenv.load();
-		String json = dotenv.get("FIREBASE_SERVICE_ACCOUNT");
+		 String json = System.getenv("FIREBASE_SERVICE_ACCOUNT");
 		
         // Controlla se la variabile json è stata caricata correttamente
         if (json == null || json.isEmpty()) {
