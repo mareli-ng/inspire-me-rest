@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,11 +34,9 @@ public class AuthenticationController {
 	@Autowired
 	private AppUserDetailsService userDetailsService;
 	
-	@Autowired
-	private PasswordEncoder encoder;
-	
 	@PostMapping(value = "/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginDto dto) {
+		System.out.println("POST /authenticate called with " + dto.getUsername());
 		ResponseEntity<?> responseEntity = null;
 		AppUserDetails user = userDetailsService.loadUserByUsername(dto.getUsername());
 		try {
