@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.mdg.inspireme.dao.OriginiDao;
 import it.mdg.inspireme.dto.RiferimentoDto;
 import it.mdg.inspireme.dto.SelectItem;
+import it.mdg.inspireme.dto.SuggestionFilterDto;
 import it.mdg.inspireme.services.RiferimentoService;
 
 @RestController
@@ -32,8 +33,8 @@ public class MainController {
     }
 	
     @PostMapping("/random")
-    public List<RiferimentoDto> getRandomRiferimentiByCategorie(@RequestBody List<Integer> categorieIds, @RequestParam int n) {
-    	return riferimentoService.getRandomRiferimentiByCategorie(categorieIds, n);
+    public List<RiferimentoDto> getRandomRiferimentiByCategorie(@RequestBody SuggestionFilterDto dto, @RequestParam int n) {
+    	return riferimentoService.getRandomRiferimenti(dto, n);
     }
     
     @GetMapping("/options/origini")

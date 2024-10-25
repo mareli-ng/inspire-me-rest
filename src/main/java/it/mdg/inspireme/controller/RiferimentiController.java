@@ -38,19 +38,15 @@ public class RiferimentiController {
 			@RequestParam("riferimento") String dto,
 	        @RequestParam(value = "file", required = false) MultipartFile file) {
 		 System.out.println("Received RiferimentoDto: " + dto);
-		 //map to RiferimentoDto
 	    try {
 	    	RiferimentoDto riferimentoDto = objectMapper.readValue(dto, RiferimentoDto.class);
-	        // Controlla se il file esiste e caricalo su Firebase Storage
 	        if (file != null && !file.isEmpty()) {
 	            String imageUrl = firebaseStorageService.uploadFile(file, file.getOriginalFilename());
 	            riferimentoDto.setAnteprima(imageUrl);
 	        } else {
-	            // Se nessun file è stato caricato, imposta un valore predefinito per l'anteprima (opzionale)
 	            riferimentoDto.setAnteprima("default-image-url"); // Imposta un URL immagine di default se necessario
 	        }
 
-	        // Salva il riferimento
 	        RiferimentoDto savedRiferimento = riferimentoService.addRiferimento(riferimentoDto);
 	        return ResponseEntity.status(HttpStatus.CREATED).body(savedRiferimento);
 
@@ -64,7 +60,7 @@ public class RiferimentiController {
 	public ResponseEntity<RiferimentoDto> updateRiferimento(@RequestPart("riferimento") RiferimentoDto riferimentoDto,
 			@RequestParam("file") MultipartFile file) {
 		try {
-
+//TODO gestire update file, origine e tag
 			String imageUrl = firebaseStorageService.uploadFile(file, file.getOriginalFilename());
 			riferimentoDto.setAnteprima(imageUrl);
 			RiferimentoDto savedRiferimento = riferimentoService.updateRiferimento(riferimentoDto);

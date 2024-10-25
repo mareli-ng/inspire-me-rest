@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import it.mdg.inspireme.entities.Origine;
-
 @Repository
 public interface OriginiDao extends JpaRepository<Origine, Integer> {
 

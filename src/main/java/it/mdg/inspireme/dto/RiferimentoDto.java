@@ -13,4 +13,5 @@ public class RiferimentoDto {
 	private String url;
 	private String origine;
 	private List<Integer> categorieIds;
+	private List<String> tagList;
 }
