@@ -40,12 +40,14 @@ public class RiferimentiController {
 		 System.out.println("Received RiferimentoDto: " + dto);
 	    try {
 	    	RiferimentoDto riferimentoDto = objectMapper.readValue(dto, RiferimentoDto.class);
-	        if (file != null && !file.isEmpty()) {
-	            String imageUrl = firebaseStorageService.uploadFile(file, file.getOriginalFilename());
-	            riferimentoDto.setAnteprima(imageUrl);
-	        } else {
-	            riferimentoDto.setAnteprima("default-image-url"); // Imposta un URL immagine di default se necessario
-	        }
+	    	if (riferimentoDto.getAnteprima() == null) {
+		        if (file != null && !file.isEmpty()) {
+		            String imageUrl = firebaseStorageService.uploadFile(file, file.getOriginalFilename());
+		            riferimentoDto.setAnteprima(imageUrl);
+		        } else {
+		            riferimentoDto.setAnteprima("default-image-url"); // Imposta un URL immagine di default se necessario
+		        }
+	    	}
 
 	        RiferimentoDto savedRiferimento = riferimentoService.addRiferimento(riferimentoDto);
 	        return ResponseEntity.status(HttpStatus.CREATED).body(savedRiferimento);

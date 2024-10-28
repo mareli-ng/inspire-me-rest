@@ -33,7 +33,7 @@ public class MainController {
     }
 	
     @PostMapping("/random")
-    public List<RiferimentoDto> getRandomRiferimentiByCategorie(@RequestBody SuggestionFilterDto dto, @RequestParam int n) {
+    public List<RiferimentoDto> getRandomRiferimenti(@RequestBody SuggestionFilterDto dto, @RequestParam int n) {
     	return riferimentoService.getRandomRiferimenti(dto, n);
     }
     

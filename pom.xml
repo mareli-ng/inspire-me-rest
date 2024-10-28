@@ -1,12 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>it.mdg</groupId>
-  <artifactId>inspire-me-rest</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>inspire-me-rest</name>
-  
-  
-<parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>it.mdg</groupId>
+	<artifactId>inspire-me-rest</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>inspire-me-rest</name>
+
+
+	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.1.RELEASE</version>
@@ -35,11 +37,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
-			<version>1.70</version>
-		</dependency>
-		<dependency>
 			<groupId>com.google.firebase</groupId>
 			<artifactId>firebase-admin</artifactId>
 			<version>9.4.1</version>
@@ -49,7 +46,7 @@
 			<artifactId>java-dotenv</artifactId>
 			<version>5.2.2</version>
 		</dependency>
-		<dependency> 
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
@@ -80,6 +77,11 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.14.3</version>
 		</dependency>
 
 	</dependencies>
