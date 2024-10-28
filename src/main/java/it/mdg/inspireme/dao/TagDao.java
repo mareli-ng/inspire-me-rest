@@ -18,5 +18,8 @@ public interface TagDao extends JpaRepository<Tag, Integer> {
 	@Query("select t from Tag t where trim(lower(t.descrizione)) in (:tagList)")
 	List<Tag> findByDescrizioneList(List<String> tagList);
 
+	@Query("select t from Tag t, RiferimentoTag rt where t.id = rt.idTag and rt.idRiferimento = :idRiferimento")
+	List<Tag> findByIdRiferimento(Integer idRiferimento);
+
 }
 

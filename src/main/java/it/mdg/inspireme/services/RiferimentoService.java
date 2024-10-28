@@ -159,24 +159,43 @@ public class RiferimentoService {
 		dto.setTitolo(riferimento.getTitolo());
 		dto.setDescrizione(riferimento.getDescrizione());
 		dto.setUrl(riferimento.getUrl());
-		dto.setOrigine(originiDao.findById(riferimento.getIdOrigine()).orElseThrow(IllegalArgumentException::new)
-				.getDescrizione());
+		if (riferimento.getIdOrigine() != null) {
+			dto.setOrigine(originiDao.findById(riferimento.getIdOrigine()).orElseThrow(IllegalArgumentException::new)
+					.getDescrizione());
+		}
+		dto.setTagList(tagDao.findByIdRiferimento(riferimento.getId()).stream().map(t -> t.getDescrizione()).collect(Collectors.toList()));
 		return dto;
 	}
 
 	public List<RiferimentoDto> getRandomRiferimenti(SuggestionFilterDto dto, int n) {
-		List<Integer> allCategoryIds = new ArrayList<>(dto.getCategorie());
-		for (Integer categoryId : dto.getCategorie()) {
-			allCategoryIds.addAll(findAllChildCategoryIds(categoryId));
+		List<Integer> categoryIds = null;
+		List<Integer> tagIds = null;
+		List<Integer> originiIds = null;
+		
+		if (checkIfHasElements(dto.getCategorie())) {
+			categoryIds = new ArrayList<>();
+			categoryIds.addAll(dto.getCategorie());
+			for (Integer categoryId : dto.getCategorie()) {
+				categoryIds.addAll(findAllChildCategoryIds(categoryId));
+			}
 		}
 		
-		List<Integer> tagIds = this.tagDao.findByDescrizioneList(dto.getTag().stream().map(t -> t.toLowerCase().trim()).collect(Collectors.toList())).stream().map(t -> t.getId()).collect(Collectors.toList());
+		if (checkIfHasElements(dto.getTag())) {
+			tagIds = this.tagDao.findByDescrizioneList(dto.getTag().stream().map(t -> t.toLowerCase().trim()).collect(Collectors.toList())).stream().map(t -> t.getId()).collect(Collectors.toList());
+		}
 		
-		List<Integer> originiIds = dto.getOrigini().stream().map(o -> o.getValue()).collect(Collectors.toList());
+		if (checkIfHasElements(dto.getOrigini())) {
+			originiIds = dto.getOrigini().stream().map(o -> o.getValue()).collect(Collectors.toList());
+		}
 		
 		Pageable pageable = PageRequest.of(0, n);
-		return riferimentiDao.findRandom(allCategoryIds, tagIds, originiIds, pageable).stream().map(r -> convertToDto(r))
-				.collect(Collectors.toList());
+		return riferimentiDao.findRandomWithFilters(categoryIds, originiIds, tagIds, pageable).stream().map(r -> convertToDto(r)).collect(Collectors.toList());
+//		return riferimentiDao.findRandom(allCategoryIds, tagIds, originiIds, pageable).stream().map(r -> convertToDto(r))
+//				.collect(Collectors.toList());
+	}
+	
+	private boolean checkIfHasElements(List<?> ids) {
+		return ids != null && ids.size() > 0;
 	}
 
 	private List<Integer> findAllChildCategoryIds(Integer categoryId) {
